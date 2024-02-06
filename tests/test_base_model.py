@@ -5,7 +5,9 @@ This module contains the unit tests for the BaseModel class.
 
 import unittest
 from datetime import datetime
-from base_model import BaseModel
+import sys
+sys.path.append('../')  # Add the parent directory to the Python path
+from models.base_model import BaseModel
 
 class TestBaseModel(unittest.TestCase):
     """
