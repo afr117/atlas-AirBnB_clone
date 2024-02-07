@@ -1,15 +1,12 @@
-#!/usr/bin/python3
-"""
-This module contains the unit tests for the BaseModel class.
-"""
-
+import sys
+import os
 import unittest
 from datetime import datetime
-import sys
-sys.path.append('../')  # Add the parent directory to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from models.base_model import BaseModel
 
-class TestBaseModelDict(unittest.TestCase):
+class TestBaseModel(unittest.TestCase):
     """
     Test cases for the BaseModel class.
     """
