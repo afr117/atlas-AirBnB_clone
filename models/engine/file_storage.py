@@ -29,18 +29,22 @@ class FileStorage:
         """
         Serializes __objects to the JSON file.
         """
-        # Create an empty dictionary to store JSON-serializable representations of objects
-        json_dict = {}
-    
-        # Iterate over each key-value pair in __objects dictionary
-        for key, value in self.__objects.items():
-            # Convert the object to a dictionary representation using to_dict() method
-            json_dict[key] = value.to_dict()
-    
-        # Open the JSON file in write mode
-        with open(self.__file_path, 'w') as file:
-            # Serialize the dictionary to JSON and write it to the file
-            json.dump(json_dict, file)
+        try:
+            # Create an empty dictionary to store JSON-serializable representations of objects
+            json_dict = {}
+        
+            # Iterate over each key-value pair in __objects dictionary
+            for key, value in self.__objects.items():
+                # Convert the object to a dictionary representation using to_dict() method
+                json_dict[key] = value.to_dict()
+        
+            # Open the JSON file in write mode
+            with open(self.__file_path, 'w') as file:
+                # Serialize the dictionary to JSON and write it to the file
+                json.dump(json_dict, file)
+            print("Objects saved successfully.")
+        except Exception as e:
+            print(f"Error saving objects: {e}")
 
     def reload(self):
         """
@@ -52,6 +56,9 @@ class FileStorage:
                 for key, value in objects_dict.items():
                     class_name, obj_id = key.split('.')
                     self.__objects[key] = eval(class_name)(**value)
+            print("Objects reloaded successfully.")
         except FileNotFoundError:
-            pass
+            print("File not found. No objects loaded.")
+        except Exception as e:
+            print(f"Error loading objects: {e}")
 
