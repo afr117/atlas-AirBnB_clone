@@ -42,7 +42,6 @@ class FileStorage:
             with open(self.__file_path, 'w') as file:
                 # Serialize the dictionary to JSON and write it to the file
                 json.dump(json_dict, file)
-            print("Objects saved successfully.")
         except Exception as e:
             print(f"Error saving objects: {e}")
 
@@ -56,7 +55,6 @@ class FileStorage:
                 for key, value in objects_dict.items():
                     class_name, obj_id = key.split('.')
                     self.__objects[key] = eval(class_name)(**value)
-            print("Objects reloaded successfully.")
         except FileNotFoundError:
             print("File not found. No objects loaded.")
         except Exception as e:
