@@ -1,1 +1,1 @@
-{"BaseModel.88cf87cf-830a-4715-acea-1417af600f53": {"id": "88cf87cf-830a-4715-acea-1417af600f53", "created_at": "2024-02-07T16:20:53.989350", "updated_at": "2024-02-07T16:20:53.989363", "name": "My_First_Model", "my_number": 89, "__class__": "BaseModel"}}
+{"BaseModel.88cf87cf-830a-4715-acea-1417af600f53": {"id": "88cf87cf-830a-4715-acea-1417af600f53", "name": "My_First_Model", "my_number": 89, "__class__": "BaseModel"}}
