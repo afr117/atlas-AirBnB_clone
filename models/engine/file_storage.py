@@ -56,7 +56,7 @@ class FileStorage:
                     class_name, obj_id = key.split('.')
                     self.__objects[key] = eval(class_name)(**value)
         except FileNotFoundError:
-            print("File not found. No objects loaded.")
+            pass
         except Exception as e:
-            print(f"Error loading objects: {e}")
+            pass
 
