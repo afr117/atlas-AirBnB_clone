@@ -29,10 +29,17 @@ class FileStorage:
         """
         Serializes __objects to the JSON file.
         """
+        # Create an empty dictionary to store JSON-serializable representations of objects
         json_dict = {}
+    
+        # Iterate over each key-value pair in __objects dictionary
         for key, value in self.__objects.items():
+            # Convert the object to a dictionary representation using to_dict() method
             json_dict[key] = value.to_dict()
+    
+        # Open the JSON file in write mode
         with open(self.__file_path, 'w') as file:
+            # Serialize the dictionary to JSON and write it to the file
             json.dump(json_dict, file)
 
     def reload(self):
