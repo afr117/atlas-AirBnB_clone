@@ -4,6 +4,11 @@ import json
 from models.base_model import BaseModel
 from models.user import User  # Import the User class
 
+from console import HBNBCommand
+
+# Instantiate the HBNBCommand class
+console = HBNBCommand()
+
 class FileStorage:
     """
     FileStorage class for serializing and deserializing objects to/from JSON file.
