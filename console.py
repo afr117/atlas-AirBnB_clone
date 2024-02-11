@@ -4,11 +4,6 @@ import json
 from models.base_model import BaseModel
 from models.user import User  # Import the User class
 
-from console import HBNBCommand
-
-# Instantiate the HBNBCommand class
-console = HBNBCommand()
-
 class FileStorage:
     """
     FileStorage class for serializing and deserializing objects to/from JSON file.
@@ -57,8 +52,18 @@ class FileStorage:
                     else:
                         obj = BaseModel(**value)
                     self.__objects[key] = obj
-        except FileNotFoundError:
-            pass
-        except Exception as e:
-            print(f"Error reloading objects: {e}")
+
+    def interact_with_console(self):
+        """
+        Interact with the console commands
+        """
+        from console import HBNBCommand
+
+        # Instantiate the HBNBCommand class
+        console = HBNBCommand()
+        console.cmdloop()
+
+# Instantiate FileStorage class
+file_storage = FileStorage()
+file_storage.interact_with_console()
 
