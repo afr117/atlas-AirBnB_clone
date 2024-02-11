@@ -4,12 +4,14 @@ This module defines the HBNBCommand class.
 """
 import cmd
 import models
+import os
 
 class HBNBCommand(cmd.Cmd):
     """
     HBNBCommand class for the command interpreter.
     """
     prompt = "(hbnb) "
+    file_path = os.path.abspath("models/file.json")
 
     def do_quit(self, arg):
         """
