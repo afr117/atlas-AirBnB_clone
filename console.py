@@ -4,14 +4,31 @@ import cmd
 import models
 import os
 
-# Get the current directory of the console.py file
-current_directory = os.path.dirname(os.path.abspath(__file__))
-
 # Set the file path to the desired location
 file_path = os.path.join(current_directory, 'file.json')
 
+# Check if the file exists
+if not os.path.exists(file_path):
+    print(f"Error: File '{file_path}' not found.")
+    # Optionally, you can create the file here if it doesn't exist
+    # with open(file_path, 'w') as f:
+    #     pass
+    # However, ensure that this is the desired behavior
+
+# Attempt to open the file
+try:
+    with open(file_path, 'r') as file:
+        # File operations go here
+        pass
+except FileNotFoundError:
+    print(f"Error: File '{file_path}' not found.")
+except Exception as e:
+    print(f"Error: {e}")
+
 # Update the file path in models.storage
 models.storage._FileStorage__file_path = file_path
+
+# Rest of your code continues here
 
 class HBNBCommand(cmd.Cmd):
     """
