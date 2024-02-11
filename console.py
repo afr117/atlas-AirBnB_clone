@@ -9,11 +9,8 @@ import os
 # Get the current directory of the console.py file
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
-# Navigate to the parent directory
-parent_directory = os.path.dirname(current_directory)
-
 # Set the file path to the desired location
-file_path = os.path.join(parent_directory, 'file.json')
+file_path = os.path.join(current_directory, 'file.json')
 
 # Update the file path in models.storage
 models.storage._FileStorage__file_path = file_path
