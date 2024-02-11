@@ -149,9 +149,6 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
 
 if __name__ == '__main__':
-    # Set the file path for file.json
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'file.json')
-    models.storage._FileStorage__file_path = path
-    # Start the command loop
+    models.storage._FileStorage__file_path = 'file.json'
     HBNBCommand().cmdloop()
 
