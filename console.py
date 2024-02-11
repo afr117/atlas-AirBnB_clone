@@ -6,6 +6,18 @@ import cmd
 import models
 import os
 
+# Get the current directory of the console.py file
+current_directory = os.path.dirname(os.path.abspath(__file__))
+
+# Navigate to the parent directory
+parent_directory = os.path.dirname(current_directory)
+
+# Set the file path to the desired location
+file_path = os.path.join(parent_directory, 'file.json')
+
+# Update the file path in models.storage
+models.storage._FileStorage__file_path = file_path
+
 class HBNBCommand(cmd.Cmd):
     """
     HBNBCommand class for the command interpreter.
@@ -149,6 +161,5 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
 
 if __name__ == '__main__':
-    models.storage._FileStorage__file_path = 'file.json.py'
     HBNBCommand().cmdloop()
 
