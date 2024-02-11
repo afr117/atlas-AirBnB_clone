@@ -1,69 +1,168 @@
-# file_storage.py
+# console.py
 
-import json
-from models.base_model import BaseModel
-from models.user import User  # Import the User class
+import cmd
+import models
+import os
 
-class FileStorage:
+# Get the current directory of the console.py file
+current_directory = os.path.dirname(os.path.abspath(__file__))
+
+# Set the file path to the desired location
+file_path = os.path.join(current_directory, 'file.json')
+
+# Update the file path in models.storage
+models.storage._FileStorage__file_path = file_path
+
+class HBNBCommand(cmd.Cmd):
     """
-    FileStorage class for serializing and deserializing objects to/from JSON file.
+    HBNBCommand class for the command interpreter.
     """
-    __file_path = "file.json"
-    __objects = {}
+    prompt = "(hbnb) "
 
-    def all(self):
+    def do_quit(self, arg):
         """
-        Returns the dictionary __objects.
+        Quit command to exit the program
         """
-        return self.__objects
+        return True
 
-    def new(self, obj):
+    def do_EOF(self, arg):
         """
-        Sets in __objects the obj with key <obj class name>.id.
+        EOF command to exit the program
         """
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
+        print()  # Print a newline for better formatting
+        return True
 
-    def save(self):
+    def emptyline(self):
         """
-        Serializes __objects to the JSON file.
+        Do nothing on empty input line
         """
+        pass
+
+    def do_create(self, arg):
+        """
+        Create a new instance of BaseModel, save it, and print its id
+        """
+        if not arg:
+            print("** class name missing **")
+            return
         try:
-            json_dict = {}
-            for key, value in self.__objects.items():
-                json_dict[key] = value.to_dict()
-            with open(self.__file_path, 'w') as file:
-                json.dump(json_dict, file)
-        except Exception as e:
-            print(f"Error saving objects: {e}")
+            new_instance = eval(arg)()
+            new_instance.save()
+            print(new_instance.id)
+        except NameError:
+            print("** class doesn't exist **")
 
-    def reload(self):
+    def do_show(self, arg):
         """
-        Deserializes the JSON file to __objects (if file exists).
+        Print the string representation of an instance based on class name and id
         """
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+            return
         try:
-            with open(self.__file_path, 'r') as file:
-                objects_dict = json.load(file)
-                for key, value in objects_dict.items():
-                    class_name, obj_id = key.split('.')
-                    # Dynamically create instances based on class name
-                    if class_name == 'User':
-                        obj = User(**value)
-                    else:
-                        obj = BaseModel(**value)
-                    self.__objects[key] = obj
+            class_name = args[0]
+            if len(args) < 2:
+                print("** instance id missing **")
+                return
+            instance_id = args[1]
+            key = "{}.{}".format(class_name, instance_id)
+            all_objs = models.storage.all()
+            if key in all_objs:
+                print(all_objs[key])
+            else:
+                print("** no instance found **")
+        except NameError:
+            print("** class doesn't exist **")
+
+    def do_destroy(self, arg):
+        """
+        Delete an instance based on class name and id
+        """
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+            return
+        try:
+            class_name = args[0]
+            if len(args) < 2:
+                print("** instance id missing **")
+                return
+            instance_id = args[1]
+            key = "{}.{}".format(class_name, instance_id)
+            all_objs = models.storage.all()
+            if key in all_objs:
+                del all_objs[key]
+                models.storage.save()
+            else:
+                print("** no instance found **")
+        except NameError:
+            print("** class doesn't exist **")
+
+    def do_all(self, arg):
+        """
+        Print string representations of all instances based or not on class name
+        """
+        all_objs = models.storage.all()
+        if not arg:
+            print([str(obj) for obj in all_objs.values()])
+            return
+        try:
+            class_name = arg.split()[0]
+            if class_name not in models.storage.classes:
+                print("** class doesn't exist **")
+                return
+            print([str(obj) for key, obj in all_objs.items() if key.split('.')[0] == class_name])
+        except IndexError:
+            print("** class name missing **")
+
+    def do_update(self, arg):
+        """
+        Update an instance based on class name and id by adding or updating attribute
+        """
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+            return
+        try:
+            class_name = args[0]
+            if class_name not in models.storage.classes:
+                print("** class doesn't exist **")
+                return
+            if len(args) < 2:
+                print("** instance id missing **")
+                return
+            instance_id = args[1]
+            key = "{}.{}".format(class_name, instance_id)
+            all_objs = models.storage.all()
+            if key not in all_objs:
+                print("** no instance found **")
+                return
+            if len(args) < 3:
+                print("** attribute name missing **")
+                return
+            attribute_name = args[2]
+            if len(args) < 4:
+                print("** value missing **")
+                return
+            attribute_value = args[3]
+            try:
+                attribute_value = eval(attribute_value)
+            except NameError:
+                pass
+            setattr(all_objs[key], attribute_name, attribute_value)
+            all_objs[key].save()
+        except IndexError:
+            print("** attribute name missing **")
 
     def interact_with_console(self):
         """
         Interact with the console commands
         """
-        from console import HBNBCommand
-
         # Instantiate the HBNBCommand class
         console = HBNBCommand()
         console.cmdloop()
 
-# Instantiate FileStorage class
-file_storage = FileStorage()
-file_storage.interact_with_console()
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
 
