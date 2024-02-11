@@ -56,7 +56,7 @@ class FileStorage:
                     class_name, obj_id = key.split('.')
                     self.__objects[key] = eval(class_name)(**value)
         except FileNotFoundError:
-            print("OK")
+            return "ok"
         except Exception as e:
             print(f"Error reloading objects: {e}")
 
