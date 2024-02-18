@@ -1,8 +1,11 @@
-from models.__init__ import storage
+# models/base_model.py
+
+from datetime import datetime
+import uuid
+from models import storage
 
 class BaseModel:
     """BaseModel class for common attributes/methods for other classes."""
-
     def __init__(self, *args, **kwargs):
         """Initializes a new BaseModel instance."""
         if kwargs:
@@ -15,11 +18,10 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            # Call new method of storage to add the new object
             storage.new(self)
 
     def save(self):
-        """Updates the updated_at attribute with the current datetime and saves."""
+        """Updates the updated_at attribute with the current datetime."""
         self.updated_at = datetime.now()
         storage.save()
 
@@ -32,3 +34,12 @@ class BaseModel:
         if 'updated_at' in obj_dict:
             obj_dict['updated_at'] = self.updated_at.isoformat()
         return obj_dict
+
+    def __str__(self):
+        """Returns the string representation of the object."""
+        return "[{}] ({}) {}".format(
+            self.__class__.__name__, self.id, self.__dict__)
+
+    def __repr__(self):
+        """Returns the string representation of the object."""
+        return str(self.to_dict())
