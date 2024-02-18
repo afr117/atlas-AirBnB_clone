@@ -1,8 +1,9 @@
+# models/engine/file_storage.py
+
 import json
 
 class FileStorage:
-    """Serializes instances to JSON file and deserializes JSON file to instances."""
-
+    """FileStorage class for serializing and deserializing objects to/from JSON file."""
     __file_path = "file.json"
     __objects = {}
 
@@ -17,26 +18,23 @@ class FileStorage:
 
     def save(self):
         """Serializes __objects to the JSON file."""
-        json_dict = {}
-        for key, value in self.__objects.items():
-            json_dict[key] = value.to_dict()
-        with open(self.__file_path, 'w') as file:
-            json.dump(json_dict, file)
+        try:
+            with open(self.__file_path, 'w') as file:
+                json.dump({key: obj.to_dict() for key, obj in self.__objects.items()}, file)
+        except Exception as e:
+            print(f"Error saving objects: {e}")
 
     def reload(self):
-        """Deserializes the JSON file to __objects (if exists)."""
+        """Deserializes the JSON file to __objects (if file exists)."""
         try:
             with open(self.__file_path, 'r') as file:
                 objects_dict = json.load(file)
                 for key, value in objects_dict.items():
                     class_name, obj_id = key.split('.')
                     # Dynamically create instances based on class name
-                    if class_name == 'User':
-                        from models.user import User
-                        obj = User(**value)
-                    else:
-                        from models.base_model import BaseModel
-                        obj = BaseModel(**value)
+                    obj = eval(class_name)(**value)
                     self.__objects[key] = obj
         except FileNotFoundError:
             pass
+        except Exception as e:
+            print(f"Error reloading objects: {e}")
