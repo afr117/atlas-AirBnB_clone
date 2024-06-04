@@ -1,6 +1,7 @@
 import cmd
 from models.base_model import BaseModel
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
 
@@ -27,8 +28,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
-    # Additional commands go here
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
