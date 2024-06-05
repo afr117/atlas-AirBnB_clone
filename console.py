@@ -1,9 +1,14 @@
 #!/usr/bin/python3
 """Defines the HBNB console."""
 import cmd
+from models import storage
 from models.base_model import BaseModel
 from models.user import User
-from models import storage
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """Defines the HolbertonBnB command interpreter."""
@@ -23,30 +28,25 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Create a new instance of BaseModel/User, saves it (to the JSON file) and prints the id."""
+        """Create a new instance of a specified class."""
         if not arg:
             print("** class name missing **")
             return
         try:
-            if arg == "BaseModel":
-                obj = BaseModel()
-            elif arg == "User":
-                obj = User()
-            else:
-                print("** class doesn't exist **")
-                return
+            obj = eval(arg)()
             obj.save()
             print(obj.id)
         except Exception as e:
             print(e)
 
     def do_show(self, arg):
-        """Print the string representation of an instance based on the class name and id."""
+        """Prints the string representation of an instance based on the class name and id."""
         args = arg.split()
         if not args:
             print("** class name missing **")
             return
-        if args[0] not in ["BaseModel", "User"]:
+        class_name = args[0]
+        if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
@@ -59,12 +59,13 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_destroy(self, arg):
-        """Delete an instance based on the class name and id."""
+        """Deletes an instance based on the class name and id."""
         args = arg.split()
         if not args:
             print("** class name missing **")
             return
-        if args[0] not in ["BaseModel", "User"]:
+        class_name = args[0]
+        if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
@@ -78,9 +79,9 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_all(self, arg):
-        """Print all string representation of all instances based or not on the class name."""
+        """Prints all string representation of all instances based or not on the class name."""
         if arg:
-            if arg not in ["BaseModel", "User"]:
+            if arg not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
                 print("** class doesn't exist **")
                 return
             objs = [str(obj) for key, obj in storage.all().items() if arg in key]
@@ -89,12 +90,13 @@ class HBNBCommand(cmd.Cmd):
         print(objs)
 
     def do_update(self, arg):
-        """Update an instance based on the class name and id by adding or updating attribute."""
+        """Updates an instance based on the class name and id by adding or updating attribute."""
         args = arg.split()
         if not args:
             print("** class name missing **")
             return
-        if args[0] not in ["BaseModel", "User"]:
+        class_name = args[0]
+        if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
