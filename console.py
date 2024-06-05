@@ -1,9 +1,8 @@
+#!/usr/bin/env python3
 import cmd
-from models.base_model import BaseModel
-
 
 class HBNBCommand(cmd.Cmd):
-    prompt = '(hbnb) '
+    prompt = "(hbnb) "
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
@@ -14,20 +13,8 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
+        """Do nothing on empty line"""
         pass
-
-    def do_create(self, arg):
-        """Create a new instance of BaseModel, saves it, and prints the id"""
-        if not arg:
-            print("** class name missing **")
-            return
-        if arg == "BaseModel":
-            new_instance = BaseModel()
-            new_instance.save()
-            print(new_instance.id)
-        else:
-            print("** class doesn't exist **")
-
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
