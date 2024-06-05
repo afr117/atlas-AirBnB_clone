@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+This module contains the entry point of the command interpreter.
+"""
+
 import cmd
 
 class HBNBCommand(cmd.Cmd):
