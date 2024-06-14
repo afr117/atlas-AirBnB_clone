@@ -8,10 +8,12 @@ header {
 }
 
 header .logo {
-    width: 40px;
-    height: 40px;
-    background-image: url('../images/logo.png'); /* Ensure you have a logo image named logo.png in the images folder */
-    background-size: contain;
+    background-image: url('../images/logo.png');
     background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 50px; /* Adjust according to your logo size */
+    height: 50px; /* Adjust according to your logo size */
     margin-left: 20px;
 }
+
