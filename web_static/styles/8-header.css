@@ -1,5 +1,14 @@
-header .logo {
-    background-image: url('../images/logo.png');
+header {
+    background-color: white;
+    height: 70px;
+    width: 100%;
+    border-bottom: 1px solid #CCCCCC;
+    display: flex;
+    align-items: center;
+}
+
+header .logo2 {
+    background-image: url('../images/logo2.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
